@@ -1,0 +1,79 @@
+project:
+  name: brain-tumor-mri-classification
+  version: 1.0.0
+  author: Your Name
+  description: Deep Learning system for brain tumor classification using ensemble
+    of ConvNeXt + ViT
+  github_url: https://github.com/YOUR_USERNAME/brain-tumor-mri-classification
+data:
+  dataset_name: masoudnickparvar/brain-tumor-mri-dataset
+  num_classes: 4
+  class_names:
+  - glioma
+  - meningioma
+  - notumor
+  - pituitary
+  image_size: 224
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+  random_seed: 42
+training:
+  batch_size: 32
+  num_epochs: 50
+  learning_rate: 0.0001
+  weight_decay: 1.0e-05
+  num_workers: 4
+  pin_memory: true
+  mixed_precision: true
+  gradient_clip: 1.0
+  early_stopping_patience: 10
+  save_top_k: 3
+augmentation:
+  train:
+    horizontal_flip_prob: 0.5
+    vertical_flip_prob: 0.3
+    rotation_limit: 15
+    brightness_limit: 0.2
+    contrast_limit: 0.2
+    gaussian_blur_prob: 0.3
+  test_time_augmentation:
+    enabled: true
+    num_augmentations: 5
+models:
+  architectures:
+  - convnext_base
+  - vit_base_patch16_224
+  - efficientnetv2_m
+  ensemble:
+    enabled: true
+    weights:
+    - 0.35
+    - 0.35
+    - 0.3
+  pretrained: true
+  dropout: 0.3
+optimization:
+  onnx_export: true
+  quantization: fp16
+  target_inference_time_ms: 150
+wandb:
+  project: brain-tumor-classification
+  entity: null
+  tags:
+  - medical-imaging
+  - brain-tumor
+  - ensemble
+  - pytorch-2.5
+  log_interval: 50
+  save_code: true
+deployment:
+  platform: huggingface_spaces
+  gradio_version: 5.0.2
+  enable_queue: true
+  max_batch_size: 8
+paths:
+  data_root: /kaggle/working/brain-tumor-mri-classification/data
+  models_dir: /kaggle/working/brain-tumor-mri-classification/models
+  logs_dir: /kaggle/working/brain-tumor-mri-classification/logs
+  outputs_dir: /kaggle/working/brain-tumor-mri-classification/outputs

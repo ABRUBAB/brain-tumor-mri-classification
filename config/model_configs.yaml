@@ -1,0 +1,33 @@
+convnext_base:
+  architecture: convnext_base
+  pretrained: true
+  num_classes: 4
+  drop_rate: 0.3
+  drop_path_rate: 0.1
+  optimizer: adamw
+  lr: 0.0001
+  weight_decay: 1.0e-05
+  scheduler: cosine
+  warmup_epochs: 5
+vit_base_patch16_224:
+  architecture: vit_base_patch16_224
+  pretrained: true
+  num_classes: 4
+  drop_rate: 0.3
+  attn_drop_rate: 0.1
+  optimizer: adamw
+  lr: 5.0e-05
+  weight_decay: 0.0001
+  scheduler: cosine
+  warmup_epochs: 10
+efficientnetv2_m:
+  architecture: efficientnetv2_m
+  pretrained: true
+  num_classes: 4
+  drop_rate: 0.3
+  drop_connect_rate: 0.2
+  optimizer: adamw
+  lr: 0.0001
+  weight_decay: 1.0e-05
+  scheduler: cosine
+  warmup_epochs: 5
