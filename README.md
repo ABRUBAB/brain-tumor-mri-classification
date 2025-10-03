@@ -43,21 +43,21 @@ This system uses an ensemble of state-of-the-art deep learning models (ConvNeXt 
 
 ### Installation
 
-\`\`\`bash
+```bash
 # Clone repository
 git clone https://github.com/YOUR_USERNAME/brain-tumor-mri-classification.git
 cd brain-tumor-mri-classification
 
 # Install dependencies
 pip install -r requirements.txt
-\`\`\`
+```
 
 ### Usage
 
-\`\`\`python
+```python
 # Run Gradio app
 python app/gradio_app.py
-\`\`\`
+```
 
 ---
 
@@ -69,29 +69,30 @@ python app/gradio_app.py
 
 ## 📁 Project Structure
 
-\`\`\`
+```
 brain-tumor-mri-classification/
-├── config/              # Configuration files
-├── data/                # Dataset (not included in repo)
-├── src/                 # Source code
-│   ├── data/           # Data loading & preprocessing
-│   ├── models/         # Model architectures
-│   ├── training/       # Training loops
-│   ├── inference/      # Inference pipelines
-│   └── explainability/ # Grad-CAM++, SHAP, etc.
-├── app/                 # Gradio application
-├── notebooks/           # Jupyter notebooks
-├── models/              # Trained models (not in repo)
-├── tests/               # Unit tests
-├── deployment/          # Docker & deployment configs
-└── docs/                # Documentation
-\`\`\`
+├── config/                    # Configuration files
+├── data/                      # Dataset (not included in repo)
+├── src/                       # Source code
+│   ├── data/                  # Data loading & preprocessing
+│   ├── models/                # Model architectures
+│   ├── training/              # Training loops
+│   ├── inference/             # Inference pipelines
+│   └── explainability/        # Grad-CAM++, SHAP, etc.
+├── app/                       # Gradio application
+├── notebooks/                 # Jupyter notebooks
+├── models/                    # Trained models (not in repo)
+├── tests/                     # Unit tests
+├── deployment/                # Docker & deployment configs
+└── docs/                      # Documentation
+```
 
 ---
 
 ## 🔬 Dataset
 
 **Brain Tumor MRI Dataset** from Kaggle:
+
 - **Total Images**: 7,023
 - **Classes**: 4 (Glioma, Meningioma, Pituitary, No Tumor)
 - **Split**: 70% train, 15% validation, 15% test
@@ -125,14 +126,14 @@ brain-tumor-mri-classification/
 
 If you use this code, please cite:
 
-\`\`\`bibtex
+```bibtex
 @software{brain_tumor_classification_2025,
   author = {Your Name},
   title = {Brain Tumor MRI Classification using Ensemble Deep Learning},
   year = {2025},
   url = {https://github.com/YOUR_USERNAME/brain-tumor-mri-classification}
 }
-\`\`\`
+```
 
 ---
 
@@ -144,13 +145,14 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 👤 Author
 
-**Your Name**
+**Abdullah Rubab**
+
 - 🎓 CSE Student | Bangladesh
 - 📚 5+ ML/DL Research Papers Published
 - 🎯 Applying for: Barcelona AI Master (UPC-UB-URV)
-- 📧 Email: your.email@example.com
+- 📧 Email: rubab2305202023@diu.edu.bd
 - 💼 LinkedIn: [your-profile](https://linkedin.com/in/your-profile)
-- 🐙 GitHub: [your-username](https://github.com/your-username)
+- 🐙 GitHub: [ABRUBAB](https://github.com/ABRUBAB)
 
 ---
 
