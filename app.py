@@ -41,54 +41,79 @@ tta_transforms = A.Compose([
 ])
 
 # ===== MODEL LOADING =====
+# ===== COMPLETE MODEL LOADING FUNCTION =====
 def load_models():
-    """Load all trained models with proper error handling"""
+    """Load all trained models from HuggingFace Model Repository with proper error handling"""
+    from huggingface_hub import hf_hub_download
+    import os
+    
     try:
-        print("Loading models...")
+        print("Loading models from HuggingFace Model Repository...")
         
-        # ConvNeXt-Base
+        # Model repository details
+        MODEL_REPO = "ABRUBAB/brain-tumor-mri-models"
+        
+        # ===== ConvNeXt-Base =====
         convnext_model = None
-        convnext_path = 'models/best/best_convnext_model.pth'
-        if Path(convnext_path).exists():
-            try:
+        try:
+            print("  → Downloading ConvNeXt-Base...")
+            convnext_path = hf_hub_download(
+                repo_id=MODEL_REPO,
+                filename="best_convnext_model.pth",
+                cache_dir="/tmp/model_cache"
+            )
+            
+            if os.path.exists(convnext_path):
                 convnext_model = timm.create_model('convnext_base', pretrained=False, num_classes=4)
                 convnext_model.load_state_dict(torch.load(convnext_path, map_location=DEVICE))
                 convnext_model.to(DEVICE).eval()
-                print("✅ ConvNeXt-Base loaded successfully")
-            except Exception as e:
-                print(f"⚠️ ConvNeXt loading error: {e}")
-        else:
-            print("⚠️ ConvNeXt model file not found")
+                print("  ✅ ConvNeXt-Base loaded successfully")
+            else:
+                print("  ⚠️ ConvNeXt model file not found")
+        except Exception as e:
+            print(f"  ⚠️ ConvNeXt loading error: {e}")
         
-        # Vision Transformer B/16
+        # ===== Vision Transformer B/16 =====
         vit_model = None
-        vit_path = 'models/best/best_vit_model.pth'
-        if Path(vit_path).exists():
-            try:
+        try:
+            print("  → Downloading ViT-B/16...")
+            vit_path = hf_hub_download(
+                repo_id=MODEL_REPO,
+                filename="best_vit_model.pth",
+                cache_dir="/tmp/model_cache"
+            )
+            
+            if os.path.exists(vit_path):
                 vit_model = timm.create_model('vit_base_patch16_224', pretrained=False, num_classes=4)
                 vit_model.load_state_dict(torch.load(vit_path, map_location=DEVICE))
                 vit_model.to(DEVICE).eval()
-                print("✅ ViT-B/16 loaded successfully")
-            except Exception as e:
-                print(f"⚠️ ViT loading error: {e}")
-        else:
-            print("⚠️ ViT model file not found")
+                print("  ✅ ViT-B/16 loaded successfully")
+            else:
+                print("  ⚠️ ViT model file not found")
+        except Exception as e:
+            print(f"  ⚠️ ViT loading error: {e}")
         
-        # EfficientNetV2-Medium
+        # ===== EfficientNetV2-Medium =====
         efficientnet_model = None
-        efficientnet_path = 'models/best/best_efficientnetv2_model.pth'
-        if Path(efficientnet_path).exists():
-            try:
+        try:
+            print("  → Downloading EfficientNetV2-M...")
+            efficientnet_path = hf_hub_download(
+                repo_id=MODEL_REPO,
+                filename="best_efficientnetv2_model.pth",
+                cache_dir="/tmp/model_cache"
+            )
+            
+            if os.path.exists(efficientnet_path):
                 efficientnet_model = timm.create_model('tf_efficientnetv2_m', pretrained=False, num_classes=4)
                 efficientnet_model.load_state_dict(torch.load(efficientnet_path, map_location=DEVICE))
                 efficientnet_model.to(DEVICE).eval()
-                print("✅ EfficientNetV2-M loaded successfully")
-            except Exception as e:
-                print(f"⚠️ EfficientNetV2 loading error: {e}")
-        else:
-            print("⚠️ EfficientNetV2 model file not found")
+                print("  ✅ EfficientNetV2-M loaded successfully")
+            else:
+                print("  ⚠️ EfficientNetV2 model file not found")
+        except Exception as e:
+            print(f"  ⚠️ EfficientNetV2 loading error: {e}")
         
-        # Create Ensemble Model
+        # ===== Create Ensemble Model =====
         class SimpleEnsemble(torch.nn.Module):
             def __init__(self, convnext, vit, efficientnet):
                 super().__init__()
@@ -122,11 +147,11 @@ def load_models():
         if any(m is not None for m in [convnext_model, vit_model, efficientnet_model]):
             ensemble_model = SimpleEnsemble(convnext_model, vit_model, efficientnet_model)
             ensemble_model.to(DEVICE).eval()
-            print("✅ Ensemble model created successfully")
+            print("  ✅ Ensemble model created successfully")
         else:
-            print("⚠️ No models available for ensemble")
+            print("  ⚠️ No models available for ensemble")
         
-        # Define target layers for Grad-CAM++
+        # ===== Define target layers for Grad-CAM++ =====
         target_layers = {}
         if convnext_model is not None:
             target_layers['convnext'] = convnext_model.stages[-1].blocks[-1].conv_dw
@@ -135,12 +160,23 @@ def load_models():
         if efficientnet_model is not None:
             target_layers['efficientnet'] = efficientnet_model.blocks[-1][-1].conv_pwl
         
+        print("
+✅ Model loading complete!")
+        models_loaded = sum([
+            convnext_model is not None,
+            vit_model is not None,
+            efficientnet_model is not None
+        ])
+        print(f"📊 Loaded {models_loaded}/3 models successfully")
+        
         return convnext_model, vit_model, efficientnet_model, ensemble_model, target_layers
         
     except Exception as e:
         print(f"⚠️ Critical error loading models: {e}")
         import traceback
         traceback.print_exc()
+        
+        # Return None for all models if critical error
         return None, None, None, None, {}
 
 # Load models at startup
