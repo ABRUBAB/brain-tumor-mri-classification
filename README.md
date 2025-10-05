@@ -245,7 +245,7 @@ If you use this project in your research, please cite:
 
 - [🚀 Live Demo](https://huggingface.co/spaces/ABRUBAB/brain-tumor-classifier)
 - [🐙 GitHub Repository](https://github.com/ABRUBAB/brain-tumor-mri-classification)
-- [📓 Kaggle Notebooks](https://www.kaggle.com/code/YOURUSERNAME)
+- [📓 Kaggle Notebooks](https://www.kaggle.com/work/collections/16638227)
 
 ---
 
